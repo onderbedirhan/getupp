@@ -4,7 +4,7 @@ import 'package:professional/core/models/task_model.dart';
 import 'package:professional/core/providers/task_provider.dart';
 import 'package:provider/provider.dart';
 
-class EditTaskScreen extends StatelessWidget{
+class EditTaskScreen extends StatelessWidget {
   String taskName = "";
   var formKey = GlobalKey<FormState>();
 
@@ -12,7 +12,8 @@ class EditTaskScreen extends StatelessWidget{
   EditTaskScreen({this.index});
   @override
   Widget build(BuildContext context) {
-    
+    var taskProvider = Provider.of<TaskProvider>(context);
+
     return Form(
       key: formKey,
       child: Column(
@@ -46,6 +47,86 @@ class EditTaskScreen extends StatelessWidget{
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  taskProvider.gestureCounterLess =
+                      !taskProvider.gestureCounterLess;
+                  if (taskProvider.gestureCounterLess) {
+                    taskProvider.currentContainer = 1;
+                  } else {
+                    taskProvider.currentContainer = 0;
+                  }
+                  print(taskProvider.currentContainer);
+                  taskProvider.gestureFunc();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(),
+                    color: taskProvider.containerLessColor,
+                  ),
+                  child: Text("Less"),
+                  width: 90,
+                  height: 50,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  taskProvider.gestureCounterMiddle =
+                      !taskProvider.gestureCounterMiddle;
+                  if (taskProvider.gestureCounterMiddle) {
+                    taskProvider.currentContainer = 2;
+                  } else {
+                    taskProvider.currentContainer = 0;
+                  }
+                  print(taskProvider.currentContainer);
+                  taskProvider.gestureFunc();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(),
+                    color: taskProvider.containerMiddleColor,
+                  ),
+                  child: Text("Middle"),
+                  width: 90,
+                  height: 50,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  taskProvider.gestureCounterMore =
+                      !taskProvider.gestureCounterMore;
+                  if (taskProvider.gestureCounterMore) {
+                    taskProvider.currentContainer = 3;
+                  } else {
+                    taskProvider.currentContainer = 0;
+                  }
+                  print(taskProvider.currentContainer);
+                  taskProvider.gestureFunc();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(),
+                    color: taskProvider.containerMoreColor,
+                  ),
+                  child: Text("More"),
+                  width: 90,
+                  height: 50,
+                ),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -61,8 +142,14 @@ class EditTaskScreen extends StatelessWidget{
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
                       Provider.of<TaskProvider>(context, listen: false)
-                          .editTask(title: taskName, index: index);
+                          .editTask(
+                              title: taskName,
+                              index: index,
+                              taskPriority: taskProvider.currentContainer);
+                              taskProvider.taskIsDoneCount();
                       Navigator.pop(context);
+
+
                     }
                   },
                 ),

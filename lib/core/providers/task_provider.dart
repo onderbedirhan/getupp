@@ -15,10 +15,10 @@ class TaskProvider extends ChangeNotifier {
   List<Task> completedTaskList;
   List<Task> uncompletedTaskList;
   List<Task> showingTaskList;
-  int currentContainer;
-  bool gestureCounterLess=false;
-  bool gestureCounterMiddle=false;
-  bool gestureCounterMore=false;
+  int currentContainer=0;
+  bool gestureCounterLess = false;
+  bool gestureCounterMiddle = false;
+  bool gestureCounterMore = false;
   Color containerLessColor = Colors.white;
   Color containerMiddleColor = Colors.white;
   Color containerMoreColor = Colors.white;
@@ -51,11 +51,14 @@ class TaskProvider extends ChangeNotifier {
     taskIsDoneCount();
   }
 
-  void editTask({String title, int index}) {
+  void editTask({String title, int index,int taskPriority}) {
     _myList[index].taskName = title;
+    _myList[index].taskPriority=taskPriority;
+    
     setListData();
   }
-  void inactivateColor(){
+
+  void inactivateColor() {
     containerLessColor = Colors.white;
     containerMiddleColor = Colors.white;
     containerMoreColor = Colors.white;
@@ -68,32 +71,29 @@ class TaskProvider extends ChangeNotifier {
     containerMoreColor = Colors.white;
     if (currentContainer == 1) {
       containerLessColor = kMiniFieldColor;
-      gestureCounterMiddle=false;
-      gestureCounterMore=false;
-
+      gestureCounterMiddle = false;
+      gestureCounterMore = false;
     }
     if (currentContainer == 2) {
       containerMiddleColor = kMiniFieldColor;
-      gestureCounterLess=false;
-      gestureCounterMore=false;
+      gestureCounterLess = false;
+      gestureCounterMore = false;
     }
     if (currentContainer == 3) {
       containerMoreColor = kMiniFieldColor;
-      gestureCounterLess=false;
-      gestureCounterMiddle=false;
-
+      gestureCounterLess = false;
+      gestureCounterMiddle = false;
     }
     if (currentContainer == 0) {
-      gestureCounterLess=false;
-      gestureCounterMiddle=false;
-      gestureCounterMore=false;
+      gestureCounterLess = false;
+      gestureCounterMiddle = false;
+      gestureCounterMore = false;
       containerLessColor = Colors.white;
       containerMiddleColor = Colors.white;
       containerMoreColor = Colors.white;
     }
     notifyListeners();
   }
-
 
   void taskIsDoneCount() {
     completedTaskList = [];
@@ -106,6 +106,9 @@ class TaskProvider extends ChangeNotifier {
         uncompletedTaskList.add(value);
       }
     }
+    uncompletedTaskList
+        .sort((a, b) => b.taskPriority.compareTo(a.taskPriority));
+
     taskPercent = completedTaskList.length / _myList.length;
     if (taskPercent.isNaN) {
       taskPercent = 0;

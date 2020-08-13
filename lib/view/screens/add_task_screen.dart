@@ -13,6 +13,7 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var taskProvider = Provider.of<TaskProvider>(context);
+    
     return Form(
       key: formKey,
       child: Column(
@@ -141,6 +142,8 @@ class AddTaskScreen extends StatelessWidget {
                           .addTask(Task(taskName: taskName,taskPriority: taskProvider.currentContainer));
                       Navigator.pop(context);
                       Provider.of<TaskProvider>(context, listen: false).inactivateColor();
+                      taskProvider.currentContainer=0;
+                      
                     }
                   },
                 ),

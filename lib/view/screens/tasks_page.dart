@@ -143,85 +143,111 @@ class TasksPage extends StatelessWidget {
             child: ListView.builder(
               itemCount: taskProvider.showingTaskList.length,
               itemBuilder: (context, index) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MyDismissibleWidget(
-                      index: index,
-                      onDismissed: (direction) {
-                        
-                        if (direction == DismissDirection.endToStart) {
-                          showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    title: Text("Delete ?"),
-                                    content: Text(
-                                        "Do you want to delete this task?"),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          taskProvider.getLocalData();
-                                        },
-                                        child: Text("No"),
-                                      ),
-                                      FlatButton(
-                                        onPressed: () {
-                                          taskProvider.deleteTask(
-                                              taskProvider.myList[index]);
-                                          taskProvider.taskIsDoneCount();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Yes"),
-                                      ),
-                                    ],
-                                  ));
-                        } else if (direction == DismissDirection.startToEnd) {
-                          editTask(
-                              context,
-                              index,
-                              EditTaskScreen(
-                                index: index,
-                              ));
-                        }
-                      },
-                      dismissibleChild: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                return ExpansionTile(
+                  backgroundColor: Colors.white,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        taskProvider.showingTaskList[index].taskName,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: kRobotoTextStyle,
+                          decoration:
+                              taskProvider.showingTaskList[index].taskIsDone
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                        ),
+                      ),
+                      Checkbox(
+                        value: taskProvider.showingTaskList[index].taskIsDone,
+                        onChanged: (value) {
+                          Provider.of<TaskProvider>(context, listen: false)
+                              .updateCheckProperty(
+                                  taskProvider.showingTaskList[index]);
+                        },
+                      ),
+                    ],
+                  ),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
                         children: <Widget>[
-                          CircleAvatar(
-                            child: Text(taskProvider
-                                .showingTaskList[index].taskPriority
-                                .toString()),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Task Priority:" +
+                                    taskProvider
+                                        .showingTaskList[index].taskPriority
+                                        .toString(),
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
                           ),
-                          Text(
-                            taskProvider.showingTaskList[index].taskName,
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontFamily: kRobotoTextStyle,
-                              decoration:
-                                  taskProvider.showingTaskList[index].taskIsDone
-                                      ? TextDecoration.lineThrough
-                                      : TextDecoration.none,
-                            ),
-                          ),
-                          Checkbox(
-                            value:
-                                taskProvider.showingTaskList[index].taskIsDone,
-                            onChanged: (value) {
-                              Provider.of<TaskProvider>(context, listen: false)
-                                  .updateCheckProperty(
-                                      taskProvider.showingTaskList[index]);
-                            },
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: kFieldColor,
+                                ),
+                                onPressed: () {
+                                  editTask(
+                                    context,
+                                    index,
+                                    EditTaskScreen(
+                                      index: index,
+                                    ),
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: kFieldColor,
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            title: Text("Delete ?"),
+                                            content: Text(
+                                                "Do you want to delete this task?"),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  taskProvider.getLocalData();
+                                                },
+                                                child: Text("No"),
+                                              ),
+                                              FlatButton(
+                                                onPressed: () {
+                                                  taskProvider.deleteTask(
+                                                      taskProvider
+                                                          .myList[index]);
+                                                  taskProvider
+                                                      .taskIsDoneCount();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Yes"),
+                                              ),
+                                            ],
+                                          ));
+                                },
+                              )
+                            ],
                           ),
                         ],
                       ),
                     ),
-                  ),
+                  ],
                 );
               },
             ),
@@ -245,6 +271,4 @@ class TasksPage extends StatelessWidget {
         MyModalBottomSheet(context: context, modalBottomSheetChild: child);
     myModalBottomSheet.showModalSheet();
   }
-
-
 }
