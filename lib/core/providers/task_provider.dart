@@ -11,11 +11,15 @@ class TaskProvider extends ChangeNotifier {
   List<Task> _myList = [];
   SharedPreferences mySharedPreferences;
   int get taskCount => _myList.length;
+  DateTime date =DateTime.utc(2020,4,19);
+  int dateYear=2020;
+  int dateMonth=4;
+  int dateDay=19;
   double taskPercent;
   List<Task> completedTaskList;
   List<Task> uncompletedTaskList;
   List<Task> showingTaskList;
-  int currentContainer=0;
+  int currentContainer = 0;
   bool gestureCounterLess = false;
   bool gestureCounterMiddle = false;
   bool gestureCounterMore = false;
@@ -51,17 +55,44 @@ class TaskProvider extends ChangeNotifier {
     taskIsDoneCount();
   }
 
-  void editTask({String title, int index,int taskPriority}) {
+  void editTask({String title, int index, int taskPriority}) {
     _myList[index].taskName = title;
-    _myList[index].taskPriority=taskPriority;
-    
+    _myList[index].taskPriority = taskPriority;
+
     setListData();
+  }
+    void editTaskDueDate({int index,int year,int month,int day}){
+    _myList[index].taskYear=year;
+    _myList[index].taskMonth=month;
+    _myList[index].taskDay=day;
+    setListData();
+
   }
 
   void inactivateColor() {
     containerLessColor = Colors.white;
     containerMiddleColor = Colors.white;
     containerMoreColor = Colors.white;
+    notifyListeners();
+  }
+
+
+  void activateColor() {
+    if (currentContainer == 1) {
+      containerLessColor = kMiniFieldColor;
+    }
+    if (currentContainer == 2) {
+      containerMiddleColor = kMiniFieldColor;
+    }
+    if (currentContainer==3) {
+      containerMoreColor=kMiniFieldColor;
+    }
+    if (currentContainer==0) {
+      containerLessColor=Colors.white;
+      containerMiddleColor=Colors.white;
+      containerMoreColor=Colors.white;
+      
+    }
     notifyListeners();
   }
 
@@ -94,6 +125,8 @@ class TaskProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+
 
   void taskIsDoneCount() {
     completedTaskList = [];
@@ -131,6 +164,22 @@ class TaskProvider extends ChangeNotifier {
       _myList = convertTask.taskList;
       taskIsDoneCount();
       notifyListeners();
+    }
+  }
+    Future<Null> selectDate(BuildContext context) async {
+    DateTime datePicker = await showDatePicker(
+      context: context,
+      initialDate:date,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2030),
+    );
+    if (datePicker != null && datePicker != date) {
+      date=datePicker;
+      dateYear=date.year;
+      dateMonth=date.month;
+      dateDay=date.day;
+      notifyListeners();
+      
     }
   }
 }

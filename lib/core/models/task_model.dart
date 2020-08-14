@@ -6,12 +6,16 @@ class Task {
   String taskName;
   bool taskIsDone ;
   int taskPriority;
+  int taskYear;
+  int taskMonth;
+  int taskDay;
+
 
   void changeTaskIsDone() {
     taskIsDone = !taskIsDone;
   }
 
-  Task({this.taskName, this.taskIsDone=false,this.taskPriority});
+  Task({this.taskName, this.taskIsDone=false,this.taskPriority,this.taskYear=2020,this.taskMonth=4,this.taskDay=19});
 
   factory Task.fromJson(Map<String, dynamic> json) {
     //taskName = json["taskName"];
@@ -20,6 +24,10 @@ class Task {
       taskName:json["taskName"],
       taskIsDone: json["taskIsDone"],
       taskPriority: json["taskPriority"],
+      taskYear: json["taskYear"],
+      taskMonth: json["taskMonth"],
+      taskDay: json["taskDay"],
+      
     );
   }
 
@@ -27,5 +35,8 @@ class Task {
         "taskName": taskName,
         "taskIsDone": taskIsDone,
         "taskPriority":taskPriority,
+        "taskYear":taskYear,
+        "taskMonth":taskMonth,
+        "taskDay":taskDay,
       };
 }

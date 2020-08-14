@@ -7,13 +7,15 @@ import 'package:provider/provider.dart';
 class EditTaskScreen extends StatelessWidget {
   String taskName = "";
   var formKey = GlobalKey<FormState>();
+  
 
   int index;
   EditTaskScreen({this.index});
   @override
   Widget build(BuildContext context) {
-    var taskProvider = Provider.of<TaskProvider>(context);
-
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    
+    
     return Form(
       key: formKey,
       child: Column(
@@ -27,6 +29,7 @@ class EditTaskScreen extends StatelessWidget {
             height: 10,
           ),
           TextFormField(
+            initialValue: taskProvider.myList[index].taskName,
             validator: (text) {
               if (text.length < 1) {
                 return "Please type the task";
@@ -46,6 +49,15 @@ class EditTaskScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: <Widget>[
+              Text("Task Priority",
+                  style: TextStyle(fontSize: 20, fontFamily: kRobotoTextStyle)),
+            ],
           ),
           SizedBox(
             height: 20,
@@ -130,27 +142,31 @@ class EditTaskScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                RaisedButton(
+                  color: kMiniFieldColor,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.calendar_today),
+                      Text(
+                        "  Due Date",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    taskProvider.selectDate(context);
+                  },
+                ),
                 RaisedButton(
                   color: kFieldColor,
                   child: Text(
                     "Edit",
                     style: TextStyle(color: kBackgroundColor),
                   ),
-                  onPressed: () async {
-                    if (formKey.currentState.validate()) {
-                      formKey.currentState.save();
-                      Provider.of<TaskProvider>(context, listen: false)
-                          .editTask(
-                              title: taskName,
-                              index: index,
-                              taskPriority: taskProvider.currentContainer);
-                              taskProvider.taskIsDoneCount();
-                      Navigator.pop(context);
-
-
-                    }
+                  onPressed: () {
+                    editOnPress(context);
                   },
                 ),
               ],
@@ -159,5 +175,26 @@ class EditTaskScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void editOnPress(BuildContext context) async {
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
+      Provider.of<TaskProvider>(context, listen: false).editTask(
+          title: taskName,
+          index: index,
+          taskPriority: taskProvider.currentContainer);
+      taskProvider.editTaskDueDate(
+        index: index,
+        year: taskProvider.dateYear,
+        month: taskProvider.dateMonth,
+        day: taskProvider.dateDay,
+      );
+      taskProvider.taskIsDoneCount();
+      taskProvider.currentContainer = 0;
+      Navigator.pop(context);
+    }
   }
 }

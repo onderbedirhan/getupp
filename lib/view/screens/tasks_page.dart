@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:professional/core/constants/constants.dart';
 import 'package:professional/core/models/task_model.dart';
 import 'package:professional/core/providers/task_provider.dart';
@@ -19,9 +20,11 @@ class TasksPage extends StatelessWidget {
   var mySharedPreferences;
   var sonuc;
   var deger;
+
   @override
   Widget build(BuildContext context) {
-    var taskProvider = Provider.of<TaskProvider>(context);
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+
     Size screenSize = MediaQuery.of(context).size;
     return Container(
       color: kBackgroundColor,
@@ -117,6 +120,7 @@ class TasksPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           onPressed: () {
+                            taskProvider.currentContainer = 0;
                             addTask(context, AddTaskScreen());
                           },
                           child: Row(
@@ -178,11 +182,36 @@ class TasksPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Task Priority:" +
+                                "Task Priority:   " +
+                                    taskPriorityNameFunc(context, index),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: kRobotoTextStyle,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Task Due Date:   " +
+                                    taskProvider.showingTaskList[index].taskDay
+                                        .toString() +
+                                    "." +
                                     taskProvider
-                                        .showingTaskList[index].taskPriority
+                                        .showingTaskList[index].taskMonth
+                                        .toString() +
+                                    "." +
+                                    taskProvider.showingTaskList[index].taskYear
                                         .toString(),
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: kRobotoTextStyle,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -195,6 +224,9 @@ class TasksPage extends StatelessWidget {
                                   color: kFieldColor,
                                 ),
                                 onPressed: () {
+                                  navigateEditTaskPage(context, index);
+
+                                  taskProvider.activateColor();
                                   editTask(
                                     context,
                                     index,
@@ -264,11 +296,44 @@ class TasksPage extends StatelessWidget {
   }
 
   void addTask(BuildContext context, Widget child) {
-    var taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
     taskProvider.inactivateColor();
     taskProvider.taskIsDoneCount();
     MyModalBottomSheet myModalBottomSheet =
         MyModalBottomSheet(context: context, modalBottomSheetChild: child);
     myModalBottomSheet.showModalSheet();
+  }
+
+  String taskPriorityNameFunc(BuildContext context, int index) {
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
+    if (taskProvider.showingTaskList[index].taskPriority == 1) {
+      return "Less";
+    }
+    if (taskProvider.showingTaskList[index].taskPriority == 2) {
+      return "Middle";
+    }
+    if (taskProvider.showingTaskList[index].taskPriority == 3) {
+      return "More";
+    }
+    if (taskProvider.showingTaskList[index].taskPriority == 0) {
+      return "Unspecified";
+    }
+  }
+
+  void navigateEditTaskPage(BuildContext context, int index) {
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
+    taskProvider.inactivateColor();
+    taskProvider.currentContainer =
+        taskProvider.showingTaskList[index].taskPriority;
+    taskProvider.dateYear = taskProvider.showingTaskList[index].taskYear;
+    taskProvider.dateMonth = taskProvider.showingTaskList[index].taskMonth;
+    taskProvider.dateDay = taskProvider.showingTaskList[index].taskDay;
+    taskProvider.date = DateTime.utc(
+        taskProvider.dateYear, taskProvider.dateMonth, taskProvider.dateDay);
+
+    taskProvider.activateColor();
   }
 }

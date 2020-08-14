@@ -9,10 +9,10 @@ class AddTaskScreen extends StatelessWidget {
   String taskName = "";
   var formKey = GlobalKey<FormState>();
   AddTaskScreen();
-  
+
   @override
   Widget build(BuildContext context) {
-    var taskProvider = Provider.of<TaskProvider>(context);
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     
     return Form(
       key: formKey,
@@ -48,6 +48,15 @@ class AddTaskScreen extends StatelessWidget {
             ),
           ),
           SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: <Widget>[
+              Text("Task Priority",
+                  style: TextStyle(fontSize: 20, fontFamily: kRobotoTextStyle)),
+            ],
+          ),
+          SizedBox(
             height: 20,
           ),
           Row(
@@ -55,7 +64,8 @@ class AddTaskScreen extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  taskProvider.gestureCounterLess=!taskProvider.gestureCounterLess;
+                  taskProvider.gestureCounterLess =
+                      !taskProvider.gestureCounterLess;
                   if (taskProvider.gestureCounterLess) {
                     taskProvider.currentContainer = 1;
                   } else {
@@ -78,8 +88,9 @@ class AddTaskScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  taskProvider.gestureCounterMiddle=!taskProvider.gestureCounterMiddle;
-                  if (taskProvider.gestureCounterMiddle ) {
+                  taskProvider.gestureCounterMiddle =
+                      !taskProvider.gestureCounterMiddle;
+                  if (taskProvider.gestureCounterMiddle) {
                     taskProvider.currentContainer = 2;
                   } else {
                     taskProvider.currentContainer = 0;
@@ -101,7 +112,8 @@ class AddTaskScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  taskProvider.gestureCounterMore=!taskProvider.gestureCounterMore;
+                  taskProvider.gestureCounterMore =
+                      !taskProvider.gestureCounterMore;
                   if (taskProvider.gestureCounterMore) {
                     taskProvider.currentContainer = 3;
                   } else {
@@ -127,24 +139,31 @@ class AddTaskScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                RaisedButton(
+                  color: kMiniFieldColor,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.calendar_today),
+                      Text(
+                        "Due Date",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    taskProvider.selectDate(context);
+                  },
+                ),
                 RaisedButton(
                   color: kFieldColor,
                   child: Text(
                     "Add",
                     style: TextStyle(color: kBackgroundColor),
                   ),
-                  onPressed: () async {
-                    if (formKey.currentState.validate()) {
-                      formKey.currentState.save();
-                      Provider.of<TaskProvider>(context, listen: false)
-                          .addTask(Task(taskName: taskName,taskPriority: taskProvider.currentContainer));
-                      Navigator.pop(context);
-                      Provider.of<TaskProvider>(context, listen: false).inactivateColor();
-                      taskProvider.currentContainer=0;
-                      
-                    }
+                  onPressed: () {
+                    addOnPress(context);
                   },
                 ),
               ],
@@ -154,4 +173,24 @@ class AddTaskScreen extends StatelessWidget {
       ),
     );
   }
+
+  void addOnPress(BuildContext context) async {
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
+      Provider.of<TaskProvider>(context, listen: false).addTask(Task(
+        taskName: taskName,
+        taskPriority: taskProvider.currentContainer,
+        taskYear: taskProvider.date.year,
+        taskMonth: taskProvider.date.month,
+        taskDay: taskProvider.date.day,
+      ));
+      Navigator.pop(context);
+      Provider.of<TaskProvider>(context, listen: false).inactivateColor();
+      taskProvider.currentContainer = 0;
+    }
+  }
+
+
 }

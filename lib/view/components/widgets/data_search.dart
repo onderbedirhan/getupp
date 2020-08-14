@@ -53,8 +53,7 @@ class DataSearch extends SearchDelegate<Task> {
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: (){
-          
-          
+            
         },
         leading: Icon(Icons.list),
         title: RichText(
