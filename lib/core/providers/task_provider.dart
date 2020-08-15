@@ -12,9 +12,9 @@ class TaskProvider extends ChangeNotifier {
   SharedPreferences mySharedPreferences;
   int get taskCount => _myList.length;
   DateTime date =DateTime.utc(2020,4,19);
-  int dateYear=2020;
-  int dateMonth=4;
-  int dateDay=19;
+  int dateYear;
+  int dateMonth;
+  int dateDay;
   double taskPercent;
   List<Task> completedTaskList;
   List<Task> uncompletedTaskList;

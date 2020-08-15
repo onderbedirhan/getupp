@@ -189,6 +189,7 @@ class AddTaskScreen extends StatelessWidget {
       Navigator.pop(context);
       Provider.of<TaskProvider>(context, listen: false).inactivateColor();
       taskProvider.currentContainer = 0;
+      
     }
   }
 

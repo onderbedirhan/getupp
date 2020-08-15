@@ -15,7 +15,7 @@ class Task {
     taskIsDone = !taskIsDone;
   }
 
-  Task({this.taskName, this.taskIsDone=false,this.taskPriority,this.taskYear=2020,this.taskMonth=4,this.taskDay=19});
+  Task({this.taskName, this.taskIsDone=false,this.taskPriority,this.taskYear,this.taskMonth,this.taskDay});
 
   factory Task.fromJson(Map<String, dynamic> json) {
     //taskName = json["taskName"];

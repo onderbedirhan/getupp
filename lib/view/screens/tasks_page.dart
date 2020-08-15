@@ -266,7 +266,9 @@ class TasksPage extends StatelessWidget {
                                                           .myList[index]);
                                                   taskProvider
                                                       .taskIsDoneCount();
+                                                  
                                                   Navigator.pop(context);
+                                                  
                                                 },
                                                 child: Text("Yes"),
                                               ),
@@ -321,6 +323,7 @@ class TasksPage extends StatelessWidget {
       return "Unspecified";
     }
   }
+
 
   void navigateEditTaskPage(BuildContext context, int index) {
     TaskProvider taskProvider =
