@@ -28,6 +28,7 @@ class AddTaskScreen extends StatelessWidget {
             height: 10,
           ),
           TextFormField(
+            maxLines: null,
             autofocus: true,
             validator: (text) {
               if (text.length < 1) {
@@ -187,6 +188,7 @@ class AddTaskScreen extends StatelessWidget {
         taskDay: taskProvider.date.day,
       ));
       Navigator.pop(context);
+      FocusScope.of(context).unfocus();
       Provider.of<TaskProvider>(context, listen: false).inactivateColor();
       taskProvider.currentContainer = 0;
       

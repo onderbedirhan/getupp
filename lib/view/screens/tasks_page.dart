@@ -24,10 +24,10 @@ class TasksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
-
+    TextEditingController editingController = TextEditingController();
     Size screenSize = MediaQuery.of(context).size;
     return Container(
-      color: kBackgroundColor,
+      color: Colors.white,
       child: Column(
         children: <Widget>[
           Padding(
@@ -38,7 +38,7 @@ class TasksPage extends StatelessWidget {
                 color: kFieldColor,
               ),
               width: screenSize.width,
-              height: screenSize.height * 0.30,
+              height: screenSize.height * 0.35,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -70,6 +70,7 @@ class TasksPage extends StatelessWidget {
                             ],
                           ),
                         ),
+                        
                       ],
                     ),
                     Container(
@@ -115,7 +116,7 @@ class TasksPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         RaisedButton(
-                          color: Colors.white,
+                          color: kMiniFieldColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -138,6 +139,22 @@ class TasksPage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    Expanded(
+                      child: TextFormField(
+                          
+                          controller: taskProvider.textEditingController,
+                          onChanged: (value) {
+                            taskProvider.taskSearch(value);
+                          },
+                          decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: "Search",
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(40.0))))),
+                    ),
                   ],
                 ),
               ),
@@ -148,11 +165,27 @@ class TasksPage extends StatelessWidget {
               itemCount: taskProvider.showingTaskList.length,
               itemBuilder: (context, index) {
                 return ExpansionTile(
-                  backgroundColor: Colors.white,
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
+                  backgroundColor: kBackgroundColor,
+                  title: CheckboxListTile(
+                    title: Text(
+                      taskProvider.showingTaskList[index].taskName,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: kRobotoTextStyle,
+                        decoration:
+                            taskProvider.showingTaskList[index].taskIsDone
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                      ),
+                    ),
+                    value: taskProvider.showingTaskList[index].taskIsDone,
+                    onChanged: (value) {
+                      Provider.of<TaskProvider>(context, listen: false)
+                          .updateCheckProperty(
+                              taskProvider.showingTaskList[index]);
+                    },
+                  ),
+                  /*Text(
                         taskProvider.showingTaskList[index].taskName,
                         style: TextStyle(
                           fontSize: 24,
@@ -170,9 +203,8 @@ class TasksPage extends StatelessWidget {
                               .updateCheckProperty(
                                   taskProvider.showingTaskList[index]);
                         },
-                      ),
-                    ],
-                  ),
+                      ),*/
+
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -181,13 +213,19 @@ class TasksPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "Task Priority:   " +
-                                    taskPriorityNameFunc(context, index),
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: kRobotoTextStyle,
-                                    fontWeight: FontWeight.bold),
+                              Visibility(
+                                visible: taskPriorityNameFunc(context, index) ==
+                                        "Unspecified"
+                                    ? false
+                                    : true,
+                                child: Text(
+                                  "Task Priority:   " +
+                                      taskPriorityNameFunc(context, index),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: kRobotoTextStyle,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ],
                           ),
@@ -263,12 +301,12 @@ class TasksPage extends StatelessWidget {
                                                 onPressed: () {
                                                   taskProvider.deleteTask(
                                                       taskProvider
-                                                          .myList[index]);
+                                                              .showingTaskList[
+                                                          index]);
                                                   taskProvider
                                                       .taskIsDoneCount();
-                                                  
+
                                                   Navigator.pop(context);
-                                                  
                                                 },
                                                 child: Text("Yes"),
                                               ),
@@ -323,7 +361,6 @@ class TasksPage extends StatelessWidget {
       return "Unspecified";
     }
   }
-
 
   void navigateEditTaskPage(BuildContext context, int index) {
     TaskProvider taskProvider =

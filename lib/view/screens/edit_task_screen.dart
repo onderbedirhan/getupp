@@ -7,15 +7,13 @@ import 'package:provider/provider.dart';
 class EditTaskScreen extends StatelessWidget {
   String taskName = "";
   var formKey = GlobalKey<FormState>();
-  
 
   int index;
   EditTaskScreen({this.index});
   @override
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
-    
-    
+
     return Form(
       key: formKey,
       child: Column(
@@ -29,7 +27,8 @@ class EditTaskScreen extends StatelessWidget {
             height: 10,
           ),
           TextFormField(
-            initialValue: taskProvider.myList[index].taskName,
+            maxLines: null,
+            initialValue: taskProvider.showingTaskList[index].taskName,
             validator: (text) {
               if (text.length < 1) {
                 return "Please type the task";
@@ -43,8 +42,9 @@ class EditTaskScreen extends StatelessWidget {
             },
             decoration: InputDecoration(
               labelText: "Edit Task Name",
-              hintText:
-                  Provider.of<TaskProvider>(context).myList[index].taskName,
+              hintText: Provider.of<TaskProvider>(context)
+                  .showingTaskList[index]
+                  .taskName,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -180,21 +180,24 @@ class EditTaskScreen extends StatelessWidget {
   void editOnPress(BuildContext context) async {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
+
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       Provider.of<TaskProvider>(context, listen: false).editTask(
           title: taskName,
-          index: index,
+          task: taskProvider.showingTaskList[index],
           taskPriority: taskProvider.currentContainer);
       taskProvider.editTaskDueDate(
-        index: index,
+        task: taskProvider.showingTaskList[index],
         year: taskProvider.dateYear,
         month: taskProvider.dateMonth,
         day: taskProvider.dateDay,
       );
+      taskProvider.removeQuery();
       taskProvider.taskIsDoneCount();
       taskProvider.currentContainer = 0;
       Navigator.pop(context);
+      FocusScope.of(context).unfocus();
     }
   }
 }

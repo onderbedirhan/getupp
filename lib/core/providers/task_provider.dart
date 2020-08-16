@@ -9,13 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskProvider extends ChangeNotifier {
   List<Task> _myList = [];
+  List<Task> recentTasks = [];
+  List<Task> suggestionList = [];
   SharedPreferences mySharedPreferences;
   int get taskCount => _myList.length;
-  DateTime date =DateTime.utc(2020,4,19);
+  DateTime date = DateTime.utc(2020, 4, 19);
   int dateYear;
   int dateMonth;
   int dateDay;
   double taskPercent;
+  String textFieldquery = "";
   List<Task> completedTaskList;
   List<Task> uncompletedTaskList;
   List<Task> showingTaskList;
@@ -26,6 +29,7 @@ class TaskProvider extends ChangeNotifier {
   Color containerLessColor = Colors.white;
   Color containerMiddleColor = Colors.white;
   Color containerMoreColor = Colors.white;
+  TextEditingController textEditingController=TextEditingController();
 
   UnmodifiableListView<Task> get myList => UnmodifiableListView(_myList);
 
@@ -55,19 +59,19 @@ class TaskProvider extends ChangeNotifier {
     taskIsDoneCount();
   }
 
-  void editTask({String title, int index, int taskPriority}) {
-    _myList[index].taskName = title;
-    _myList[index].taskPriority = taskPriority;
-
+  void editTask({String title, Task task, int taskPriority}) {
+    _myList[_myList.indexOf(task)].taskName = title;
+    _myList[_myList.indexOf(task)].taskPriority = taskPriority;
     setListData();
   }
-    void editTaskDueDate({int index,int year,int month,int day}){
-    _myList[index].taskYear=year;
-    _myList[index].taskMonth=month;
-    _myList[index].taskDay=day;
-    setListData();
 
+  void editTaskDueDate({Task task, int year, int month, int day}) {
+    _myList[_myList.indexOf(task)].taskYear = year;
+    _myList[_myList.indexOf(task)].taskMonth = month;
+    _myList[_myList.indexOf(task)].taskDay = day;
+    setListData();
   }
+
 
   void inactivateColor() {
     containerLessColor = Colors.white;
@@ -76,7 +80,6 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void activateColor() {
     if (currentContainer == 1) {
       containerLessColor = kMiniFieldColor;
@@ -84,14 +87,13 @@ class TaskProvider extends ChangeNotifier {
     if (currentContainer == 2) {
       containerMiddleColor = kMiniFieldColor;
     }
-    if (currentContainer==3) {
-      containerMoreColor=kMiniFieldColor;
+    if (currentContainer == 3) {
+      containerMoreColor = kMiniFieldColor;
     }
-    if (currentContainer==0) {
-      containerLessColor=Colors.white;
-      containerMiddleColor=Colors.white;
-      containerMoreColor=Colors.white;
-      
+    if (currentContainer == 0) {
+      containerLessColor = Colors.white;
+      containerMiddleColor = Colors.white;
+      containerMoreColor = Colors.white;
     }
     notifyListeners();
   }
@@ -125,8 +127,6 @@ class TaskProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-
 
   void taskIsDoneCount() {
     completedTaskList = [];
@@ -166,20 +166,39 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-    Future<Null> selectDate(BuildContext context) async {
+  void removeQuery(){
+    textEditingController.clear();
+    notifyListeners();
+  }
+
+  Future<Null> selectDate(BuildContext context) async {
     DateTime datePicker = await showDatePicker(
       context: context,
-      initialDate:date,
+      initialDate: date,
       firstDate: DateTime(2010),
       lastDate: DateTime(2030),
     );
     if (datePicker != null && datePicker != date) {
-      date=datePicker;
-      dateYear=date.year;
-      dateMonth=date.month;
-      dateDay=date.day;
+      date = datePicker;
+      dateYear = date.year;
+      dateMonth = date.month;
+      dateDay = date.day;
       notifyListeners();
-      
     }
+  }
+
+  void taskSearch(String query) {
+    if (query != null) {
+      textFieldquery = query;
+    } else {
+      textFieldquery = "";
+    }
+    suggestionList = query.isEmpty
+        ? _myList
+        : _myList
+            .where((p) => p.taskName.toLowerCase().startsWith(query))
+            .toList();
+    showingTaskList = suggestionList;
+    setListData();
   }
 }
