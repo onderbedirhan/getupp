@@ -13,7 +13,7 @@ class TaskProvider extends ChangeNotifier {
   List<Task> suggestionList = [];
   SharedPreferences mySharedPreferences;
   int get taskCount => _myList.length;
-  DateTime date = DateTime.utc(2020, 4, 19);
+  DateTime date = DateTime.utc(2020,4,19);
   int dateYear;
   int dateMonth;
   int dateDay;
@@ -29,6 +29,7 @@ class TaskProvider extends ChangeNotifier {
   Color containerLessColor = Colors.white;
   Color containerMiddleColor = Colors.white;
   Color containerMoreColor = Colors.white;
+  bool checkboxDueDateValue=false;
   TextEditingController textEditingController=TextEditingController();
 
   UnmodifiableListView<Task> get myList => UnmodifiableListView(_myList);
@@ -59,9 +60,10 @@ class TaskProvider extends ChangeNotifier {
     taskIsDoneCount();
   }
 
-  void editTask({String title, Task task, int taskPriority}) {
+  void editTask({String title, Task task, int taskPriority,bool checkboxDueDateValue}) {
     _myList[_myList.indexOf(task)].taskName = title;
     _myList[_myList.indexOf(task)].taskPriority = taskPriority;
+    _myList[_myList.indexOf(task)].dueDateExist=checkboxDueDateValue;
     setListData();
   }
 
@@ -95,6 +97,10 @@ class TaskProvider extends ChangeNotifier {
       containerMiddleColor = Colors.white;
       containerMoreColor = Colors.white;
     }
+    notifyListeners();
+  }
+  void checkboxDueDateEdit(bool value){
+    checkboxDueDateValue=value;
     notifyListeners();
   }
 
@@ -196,7 +202,7 @@ class TaskProvider extends ChangeNotifier {
     suggestionList = query.isEmpty
         ? _myList
         : _myList
-            .where((p) => p.taskName.toLowerCase().startsWith(query))
+            .where((p) => p.taskName.toLowerCase().contains(query))
             .toList();
     showingTaskList = suggestionList;
     setListData();

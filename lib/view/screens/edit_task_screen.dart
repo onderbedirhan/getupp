@@ -144,20 +144,31 @@ class EditTaskScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                RaisedButton(
-                  color: kMiniFieldColor,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.calendar_today),
-                      Text(
-                        "  Due Date",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                Row(
+                  children: <Widget>[
+                    RaisedButton(
+                      color: kMiniFieldColor,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.calendar_today),
+                          Text(
+                            "  Due Date",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  onPressed: () {
-                    taskProvider.selectDate(context);
-                  },
+                      onPressed: () {
+                        taskProvider.selectDate(context);
+                      },
+                    ),
+                    Checkbox(
+                      value: taskProvider.checkboxDueDateValue,
+                      onChanged: (value) {
+                        Provider.of<TaskProvider>(context, listen: false)
+                            .checkboxDueDateEdit(value);
+                      },
+                    ),
+                  ],
                 ),
                 RaisedButton(
                   color: kFieldColor,
@@ -184,9 +195,11 @@ class EditTaskScreen extends StatelessWidget {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       Provider.of<TaskProvider>(context, listen: false).editTask(
-          title: taskName,
-          task: taskProvider.showingTaskList[index],
-          taskPriority: taskProvider.currentContainer);
+        title: taskName,
+        task: taskProvider.showingTaskList[index],
+        taskPriority: taskProvider.currentContainer,
+        checkboxDueDateValue: taskProvider.checkboxDueDateValue,
+      );
       taskProvider.editTaskDueDate(
         task: taskProvider.showingTaskList[index],
         year: taskProvider.dateYear,

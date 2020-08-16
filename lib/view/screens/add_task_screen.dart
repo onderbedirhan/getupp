@@ -13,7 +13,7 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
-    
+
     return Form(
       key: formKey,
       child: Column(
@@ -142,20 +142,31 @@ class AddTaskScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                RaisedButton(
-                  color: kMiniFieldColor,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.calendar_today),
-                      Text(
-                        "Due Date",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                Row(
+                  children: <Widget>[
+                    RaisedButton(
+                      color: kMiniFieldColor,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.calendar_today),
+                          Text(
+                            "Due Date",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  onPressed: () {
-                    taskProvider.selectDate(context);
-                  },
+                      onPressed: () {
+                        taskProvider.selectDate(context);
+                      },
+                    ),
+                    Checkbox(
+                      value: taskProvider.checkboxDueDateValue,
+                      onChanged: (value) {
+                        Provider.of<TaskProvider>(context, listen: false)
+                            .checkboxDueDateEdit(value);
+                      },
+                    ),
+                  ],
                 ),
                 RaisedButton(
                   color: kFieldColor,
@@ -186,14 +197,12 @@ class AddTaskScreen extends StatelessWidget {
         taskYear: taskProvider.date.year,
         taskMonth: taskProvider.date.month,
         taskDay: taskProvider.date.day,
+        dueDateExist: taskProvider.checkboxDueDateValue,
       ));
       Navigator.pop(context);
       FocusScope.of(context).unfocus();
       Provider.of<TaskProvider>(context, listen: false).inactivateColor();
       taskProvider.currentContainer = 0;
-      
     }
   }
-
-
 }

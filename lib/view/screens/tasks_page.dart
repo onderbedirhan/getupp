@@ -70,7 +70,6 @@ class TasksPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        
                       ],
                     ),
                     Container(
@@ -122,6 +121,7 @@ class TasksPage extends StatelessWidget {
                           ),
                           onPressed: () {
                             taskProvider.currentContainer = 0;
+                            taskProvider.checkboxDueDateValue = false;
                             addTask(context, AddTaskScreen());
                           },
                           child: Row(
@@ -141,7 +141,6 @@ class TasksPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
-                          
                           controller: taskProvider.textEditingController,
                           onChanged: (value) {
                             taskProvider.taskSearch(value);
@@ -165,12 +164,13 @@ class TasksPage extends StatelessWidget {
               itemCount: taskProvider.showingTaskList.length,
               itemBuilder: (context, index) {
                 return ExpansionTile(
+                  leading: priorityIcon(context, index),
                   backgroundColor: kBackgroundColor,
                   title: CheckboxListTile(
                     title: Text(
                       taskProvider.showingTaskList[index].taskName,
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 20,
                         fontFamily: kRobotoTextStyle,
                         decoration:
                             taskProvider.showingTaskList[index].taskIsDone
@@ -185,26 +185,6 @@ class TasksPage extends StatelessWidget {
                               taskProvider.showingTaskList[index]);
                     },
                   ),
-                  /*Text(
-                        taskProvider.showingTaskList[index].taskName,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontFamily: kRobotoTextStyle,
-                          decoration:
-                              taskProvider.showingTaskList[index].taskIsDone
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                        ),
-                      ),
-                      Checkbox(
-                        value: taskProvider.showingTaskList[index].taskIsDone,
-                        onChanged: (value) {
-                          Provider.of<TaskProvider>(context, listen: false)
-                              .updateCheckProperty(
-                                  taskProvider.showingTaskList[index]);
-                        },
-                      ),*/
-
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -235,21 +215,27 @@ class TasksPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "Task Due Date:   " +
-                                    taskProvider.showingTaskList[index].taskDay
-                                        .toString() +
-                                    "." +
-                                    taskProvider
-                                        .showingTaskList[index].taskMonth
-                                        .toString() +
-                                    "." +
-                                    taskProvider.showingTaskList[index].taskYear
-                                        .toString(),
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: kRobotoTextStyle,
-                                    fontWeight: FontWeight.bold),
+                              Visibility(
+                                visible: taskProvider
+                                    .showingTaskList[index].dueDateExist,
+                                child: Text(
+                                  "Task Due Date:   " +
+                                      taskProvider
+                                          .showingTaskList[index].taskDay
+                                          .toString() +
+                                      "." +
+                                      taskProvider
+                                          .showingTaskList[index].taskMonth
+                                          .toString() +
+                                      "." +
+                                      taskProvider
+                                          .showingTaskList[index].taskYear
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: kRobotoTextStyle,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ],
                           ),
@@ -338,6 +324,7 @@ class TasksPage extends StatelessWidget {
   void addTask(BuildContext context, Widget child) {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
+    taskProvider.date = DateTime.now();
     taskProvider.inactivateColor();
     taskProvider.taskIsDoneCount();
     MyModalBottomSheet myModalBottomSheet =
@@ -371,9 +358,33 @@ class TasksPage extends StatelessWidget {
     taskProvider.dateYear = taskProvider.showingTaskList[index].taskYear;
     taskProvider.dateMonth = taskProvider.showingTaskList[index].taskMonth;
     taskProvider.dateDay = taskProvider.showingTaskList[index].taskDay;
+    taskProvider.checkboxDueDateValue =
+        taskProvider.showingTaskList[index].dueDateExist;
     taskProvider.date = DateTime.utc(
         taskProvider.dateYear, taskProvider.dateMonth, taskProvider.dateDay);
 
     taskProvider.activateColor();
+  }
+
+  Icon priorityIcon(BuildContext context, int index) {
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
+    if (taskProvider.showingTaskList[index].taskPriority == 3) {
+      return Icon(Icons.filter_1, color: kFieldColor);
+    } else if (taskProvider.showingTaskList[index].taskPriority == 2) {
+      return Icon(
+        Icons.filter_2,
+        color: kFieldColor,
+      );
+    } else if (taskProvider.showingTaskList[index].taskPriority == 1) {
+      return Icon(
+        Icons.filter_3,
+        color: kFieldColor,
+      );
+    } else if (taskProvider.showingTaskList[index].taskPriority == 0)
+      return Icon(
+        Icons.filter_none,
+        color: kFieldColor,
+      );
   }
 }

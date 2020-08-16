@@ -17,10 +17,8 @@ import 'package:professional/view/screens/tasks_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class MyHomePage extends StatelessWidget {
-    String taskName = "";
+  String taskName = "";
   var formKey = GlobalKey<FormState>();
   List<Task> myList = List();
   var mySharedPreferences;
@@ -39,12 +37,12 @@ class MyHomePage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.search,
+              Icons.add_circle,
               color: kFieldColor,
               size: 30,
             ),
-            onPressed: (){
-              showSearch(context: context, delegate: DataSearch());
+            onPressed: () {
+              addTask(context, AddTaskScreen());
             },
           ),
         ],
@@ -78,7 +76,6 @@ class MyHomePage extends StatelessWidget {
         currentIndex: provider.currentIndex,
         onTap: (index) {
           provider.currentIndex = index;
-          
         },
         items: [
           BottomNavigationBarItem(
@@ -97,10 +94,16 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-    void addTask(BuildContext context,Widget child) {
-    var taskProvider = Provider.of<TaskProvider>(context,listen: false);
+
+  void addTask(BuildContext context, Widget child) {
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
+    taskProvider.inactivateColor();
     taskProvider.taskIsDoneCount();
-        MyModalBottomSheet myModalBottomSheet=MyModalBottomSheet(context: context,modalBottomSheetChild: child);
+    taskProvider.date = DateTime.now();
+    taskProvider.checkboxDueDateValue=false;
+    MyModalBottomSheet myModalBottomSheet =
+        MyModalBottomSheet(context: context, modalBottomSheetChild: child);
     myModalBottomSheet.showModalSheet();
   }
 }
