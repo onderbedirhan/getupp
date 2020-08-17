@@ -1,19 +1,13 @@
 import 'dart:convert';
-
-import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/models/task_model.dart';
+import 'package:professional/core/providers/due_date_provider.dart';
 import 'package:professional/core/providers/task_provider.dart';
-import 'package:professional/view/components/widgets/data_search.dart';
-import 'package:professional/view/components/widgets/dismissible.dart';
 import 'package:professional/view/components/widgets/modal_bottom_sheet.dart';
 import 'package:professional/view/components/widgets/percentage_indicator.dart';
 import 'package:professional/view/screens/edit_task_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'add_task_screen.dart';
 
 class TasksPage extends StatelessWidget {
@@ -24,6 +18,7 @@ class TasksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    DueDateProvider dueDateProvider = Provider.of<DueDateProvider>(context);
     TextEditingController editingController = TextEditingController();
     Size screenSize = MediaQuery.of(context).size;
     return Container(
@@ -121,7 +116,7 @@ class TasksPage extends StatelessWidget {
                           ),
                           onPressed: () {
                             taskProvider.currentContainer = 0;
-                            taskProvider.checkboxDueDateValue = false;
+                            dueDateProvider.checkboxDueDateValue = false;
                             addTask(context, AddTaskScreen());
                           },
                           child: Row(
@@ -170,7 +165,7 @@ class TasksPage extends StatelessWidget {
                     title: Text(
                       taskProvider.showingTaskList[index].taskName,
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontFamily: kRobotoTextStyle,
                         decoration:
                             taskProvider.showingTaskList[index].taskIsDone
@@ -322,9 +317,11 @@ class TasksPage extends StatelessWidget {
   }
 
   void addTask(BuildContext context, Widget child) {
+    DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context, listen: false);
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
-    taskProvider.date = DateTime.now();
+    dueDateProvider.date = DateTime.now();
     taskProvider.inactivateColor();
     taskProvider.taskIsDoneCount();
     MyModalBottomSheet myModalBottomSheet =
@@ -352,16 +349,18 @@ class TasksPage extends StatelessWidget {
   void navigateEditTaskPage(BuildContext context, int index) {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
+    DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context, listen: false);
     taskProvider.inactivateColor();
     taskProvider.currentContainer =
         taskProvider.showingTaskList[index].taskPriority;
-    taskProvider.dateYear = taskProvider.showingTaskList[index].taskYear;
-    taskProvider.dateMonth = taskProvider.showingTaskList[index].taskMonth;
-    taskProvider.dateDay = taskProvider.showingTaskList[index].taskDay;
-    taskProvider.checkboxDueDateValue =
+    dueDateProvider.dateYear = taskProvider.showingTaskList[index].taskYear;
+    dueDateProvider.dateMonth = taskProvider.showingTaskList[index].taskMonth;
+    dueDateProvider.dateDay = taskProvider.showingTaskList[index].taskDay;
+    dueDateProvider.checkboxDueDateValue =
         taskProvider.showingTaskList[index].dueDateExist;
-    taskProvider.date = DateTime.utc(
-        taskProvider.dateYear, taskProvider.dateMonth, taskProvider.dateDay);
+    dueDateProvider.date = DateTime.utc(dueDateProvider.dateYear,
+        dueDateProvider.dateMonth, dueDateProvider.dateDay);
 
     taskProvider.activateColor();
   }

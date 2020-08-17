@@ -13,10 +13,6 @@ class TaskProvider extends ChangeNotifier {
   List<Task> suggestionList = [];
   SharedPreferences mySharedPreferences;
   int get taskCount => _myList.length;
-  DateTime date = DateTime.utc(2020,4,19);
-  int dateYear;
-  int dateMonth;
-  int dateDay;
   double taskPercent;
   String textFieldquery = "";
   List<Task> completedTaskList;
@@ -29,7 +25,7 @@ class TaskProvider extends ChangeNotifier {
   Color containerLessColor = Colors.white;
   Color containerMiddleColor = Colors.white;
   Color containerMoreColor = Colors.white;
-  bool checkboxDueDateValue=false;
+  
   TextEditingController textEditingController=TextEditingController();
 
   UnmodifiableListView<Task> get myList => UnmodifiableListView(_myList);
@@ -99,10 +95,7 @@ class TaskProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-  void checkboxDueDateEdit(bool value){
-    checkboxDueDateValue=value;
-    notifyListeners();
-  }
+
 
   void gestureFunc() {
     containerLessColor = Colors.white;
@@ -177,21 +170,7 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Null> selectDate(BuildContext context) async {
-    DateTime datePicker = await showDatePicker(
-      context: context,
-      initialDate: date,
-      firstDate: DateTime(2010),
-      lastDate: DateTime(2030),
-    );
-    if (datePicker != null && datePicker != date) {
-      date = datePicker;
-      dateYear = date.year;
-      dateMonth = date.month;
-      dateDay = date.day;
-      notifyListeners();
-    }
-  }
+
 
   void taskSearch(String query) {
     if (query != null) {

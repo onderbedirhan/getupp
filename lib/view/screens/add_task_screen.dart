@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:professional/core/constants/constants.dart';
 import 'package:professional/core/models/task_model.dart';
+import 'package:professional/core/providers/due_date_provider.dart';
 import 'package:professional/core/providers/task_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    DueDateProvider dueDateProvider =Provider.of<DueDateProvider>(context);
 
     return Form(
       key: formKey,
@@ -156,13 +158,13 @@ class AddTaskScreen extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
-                        taskProvider.selectDate(context);
+                        dueDateProvider.selectDate(context);
                       },
                     ),
                     Checkbox(
-                      value: taskProvider.checkboxDueDateValue,
+                      value: dueDateProvider.checkboxDueDateValue,
                       onChanged: (value) {
-                        Provider.of<TaskProvider>(context, listen: false)
+                        Provider.of<DueDateProvider>(context, listen: false)
                             .checkboxDueDateEdit(value);
                       },
                     ),
@@ -189,15 +191,16 @@ class AddTaskScreen extends StatelessWidget {
   void addOnPress(BuildContext context) async {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
+        DueDateProvider dueDateProvider=Provider.of<DueDateProvider>(context,listen: false);
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       Provider.of<TaskProvider>(context, listen: false).addTask(Task(
         taskName: taskName,
         taskPriority: taskProvider.currentContainer,
-        taskYear: taskProvider.date.year,
-        taskMonth: taskProvider.date.month,
-        taskDay: taskProvider.date.day,
-        dueDateExist: taskProvider.checkboxDueDateValue,
+        taskYear: dueDateProvider.date.year,
+        taskMonth: dueDateProvider.date.month,
+        taskDay: dueDateProvider.date.day,
+        dueDateExist: dueDateProvider.checkboxDueDateValue,
       ));
       Navigator.pop(context);
       FocusScope.of(context).unfocus();
@@ -205,4 +208,5 @@ class AddTaskScreen extends StatelessWidget {
       taskProvider.currentContainer = 0;
     }
   }
+
 }

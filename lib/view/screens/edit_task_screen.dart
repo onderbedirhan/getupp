@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:professional/core/constants/constants.dart';
 import 'package:professional/core/models/task_model.dart';
+import 'package:professional/core/providers/due_date_provider.dart';
 import 'package:professional/core/providers/task_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ class EditTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    DueDateProvider dueDateProvider =Provider.of<DueDateProvider>(context);
 
     return Form(
       key: formKey,
@@ -158,13 +160,13 @@ class EditTaskScreen extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
-                        taskProvider.selectDate(context);
+                        dueDateProvider.selectDate(context);
                       },
                     ),
                     Checkbox(
-                      value: taskProvider.checkboxDueDateValue,
+                      value: dueDateProvider.checkboxDueDateValue,
                       onChanged: (value) {
-                        Provider.of<TaskProvider>(context, listen: false)
+                        Provider.of<DueDateProvider>(context, listen: false)
                             .checkboxDueDateEdit(value);
                       },
                     ),
@@ -191,6 +193,7 @@ class EditTaskScreen extends StatelessWidget {
   void editOnPress(BuildContext context) async {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
+        DueDateProvider dueDateProvider=Provider.of<DueDateProvider>(context,listen: false);
 
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
@@ -198,13 +201,13 @@ class EditTaskScreen extends StatelessWidget {
         title: taskName,
         task: taskProvider.showingTaskList[index],
         taskPriority: taskProvider.currentContainer,
-        checkboxDueDateValue: taskProvider.checkboxDueDateValue,
+        checkboxDueDateValue: dueDateProvider.checkboxDueDateValue,
       );
       taskProvider.editTaskDueDate(
         task: taskProvider.showingTaskList[index],
-        year: taskProvider.dateYear,
-        month: taskProvider.dateMonth,
-        day: taskProvider.dateDay,
+        year: dueDateProvider.dateYear,
+        month: dueDateProvider.dateMonth,
+        day: dueDateProvider.dateDay,
       );
       taskProvider.removeQuery();
       taskProvider.taskIsDoneCount();
