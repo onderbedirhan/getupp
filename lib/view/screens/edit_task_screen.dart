@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/models/task_model.dart';
 import 'package:professional/core/providers/due_date_provider.dart';
 import 'package:professional/core/providers/task_provider.dart';
 import 'package:provider/provider.dart';

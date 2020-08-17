@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/models/task_model.dart';
-import 'package:professional/core/providers/task_provider.dart';
-import 'package:professional/view/screens/edit_task_screen.dart';
 
-import 'package:provider/provider.dart';
 
 class MyDismissibleWidget extends StatelessWidget {
   int index;

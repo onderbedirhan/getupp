@@ -18,7 +18,7 @@ class PercentageIndicator extends StatelessWidget {
       center: new Text(
         "%" + (taskProvider.taskPercent * 100).toStringAsFixed(0),
         style: new TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 18.0, color: kFieldColor),
+            fontWeight: FontWeight.bold, fontSize: 16.0, color: kFieldColor),
       ),
       circularStrokeCap: CircularStrokeCap.round,
       backgroundColor: kMiniFieldColor,
