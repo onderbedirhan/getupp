@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:professional/core/constants/constants.dart';
 import 'package:professional/core/providers/due_date_provider.dart';
@@ -10,16 +9,13 @@ import 'package:provider/provider.dart';
 import 'add_task_screen.dart';
 
 class TasksPage extends StatelessWidget {
-  var mySharedPreferences;
-  var sonuc;
-  var deger;
-
   @override
   Widget build(BuildContext context) {
-    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
-    DueDateProvider dueDateProvider = Provider.of<DueDateProvider>(context);
-    TextEditingController editingController = TextEditingController();
-    Size screenSize = MediaQuery.of(context).size;
+    final TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    final DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context);
+    final Size screenSize = MediaQuery.of(context).size;
+
     return Container(
       color: Colors.white,
       child: Column(

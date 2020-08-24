@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:professional/core/constants/constants.dart';
 import 'package:professional/core/models/task_model.dart';
@@ -13,12 +12,11 @@ import 'package:professional/view/screens/tasks_page.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
-  String taskName = "";
-  var formKey = GlobalKey<FormState>();
-  List<Task> myList = List();
-  var mySharedPreferences;
+  final String taskName = "";
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final List<Task> myList = List();
 
-  var currentTab = [
+  final List<StatelessWidget> currentTab = [
     TasksPage(),
     TagsPage(),
     FamilyPage(),
@@ -26,8 +24,9 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavigationBarProvider provider = Provider.of<BottomNavigationBarProvider>(context);
-    
+    final BottomNavigationBarProvider provider =
+        Provider.of<BottomNavigationBarProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -92,7 +91,8 @@ class MyHomePage extends StatelessWidget {
   }
 
   void addTask(BuildContext context, Widget child) {
-    DueDateProvider dueDateProvider=Provider.of<DueDateProvider>(context,listen: false);
+    DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context, listen: false);
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
     taskProvider.inactivateColor();

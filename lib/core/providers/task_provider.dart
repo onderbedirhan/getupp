@@ -8,6 +8,7 @@ import 'package:professional/core/models/task_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskProvider extends ChangeNotifier {
+  String taskName;
   List<Task> _myList = [];
   List<Task> recentTasks = [];
   List<Task> suggestionList = [];
@@ -25,8 +26,8 @@ class TaskProvider extends ChangeNotifier {
   Color containerLessColor = Colors.white;
   Color containerMiddleColor = Colors.white;
   Color containerMoreColor = Colors.white;
-  
-  TextEditingController textEditingController=TextEditingController();
+
+  TextEditingController textEditingController = TextEditingController();
 
   UnmodifiableListView<Task> get myList => UnmodifiableListView(_myList);
 
@@ -56,10 +57,11 @@ class TaskProvider extends ChangeNotifier {
     taskIsDoneCount();
   }
 
-  void editTask({String title, Task task, int taskPriority,bool checkboxDueDateValue}) {
+  void editTask(
+      {String title, Task task, int taskPriority, bool checkboxDueDateValue}) {
     _myList[_myList.indexOf(task)].taskName = title;
     _myList[_myList.indexOf(task)].taskPriority = taskPriority;
-    _myList[_myList.indexOf(task)].dueDateExist=checkboxDueDateValue;
+    _myList[_myList.indexOf(task)].dueDateExist = checkboxDueDateValue;
     setListData();
   }
 
@@ -69,7 +71,6 @@ class TaskProvider extends ChangeNotifier {
     _myList[_myList.indexOf(task)].taskDay = day;
     setListData();
   }
-
 
   void inactivateColor() {
     containerLessColor = Colors.white;
@@ -95,7 +96,6 @@ class TaskProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
 
   void gestureFunc() {
     containerLessColor = Colors.white;
@@ -156,7 +156,7 @@ class TaskProvider extends ChangeNotifier {
 
   void getLocalData() async {
     mySharedPreferences = await SharedPreferences.getInstance();
-    var sonuc = mySharedPreferences.getString("taskList");
+    String sonuc = mySharedPreferences.getString("taskList");
     if (sonuc != null) {
       final deger = json.decode(sonuc);
       ConvertTask convertTask = ConvertTask.fromJson(deger);
@@ -165,12 +165,11 @@ class TaskProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  void removeQuery(){
+
+  void removeQuery() {
     textEditingController.clear();
     notifyListeners();
   }
-
-
 
   void taskSearch(String query) {
     if (query != null) {

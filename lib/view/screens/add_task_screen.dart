@@ -6,14 +6,14 @@ import 'package:professional/core/providers/task_provider.dart';
 import 'package:provider/provider.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  String taskName = "";
-  var formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AddTaskScreen();
 
   @override
   Widget build(BuildContext context) {
-    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
-    DueDateProvider dueDateProvider =Provider.of<DueDateProvider>(context);
+    final TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    final DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context);
 
     return Form(
       key: formKey,
@@ -39,7 +39,7 @@ class AddTaskScreen extends StatelessWidget {
               }
             },
             onSaved: (value) {
-              taskName = value;
+              taskProvider.taskName = value;
             },
             decoration: InputDecoration(
               labelText: "Task Name",
@@ -190,11 +190,12 @@ class AddTaskScreen extends StatelessWidget {
   void addOnPress(BuildContext context) async {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
-        DueDateProvider dueDateProvider=Provider.of<DueDateProvider>(context,listen: false);
+    DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context, listen: false);
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       Provider.of<TaskProvider>(context, listen: false).addTask(Task(
-        taskName: taskName,
+        taskName: taskProvider.taskName,
         taskPriority: taskProvider.currentContainer,
         taskYear: dueDateProvider.date.year,
         taskMonth: dueDateProvider.date.month,
@@ -207,6 +208,4 @@ class AddTaskScreen extends StatelessWidget {
       taskProvider.currentContainer = 0;
     }
   }
-
-
 }

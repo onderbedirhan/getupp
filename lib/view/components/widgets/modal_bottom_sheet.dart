@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
+class MyModalBottomSheet {
+  final BuildContext context;
+  final int index;
+  final Widget modalBottomSheetChild;
+  MyModalBottomSheet({this.context, this.index, this.modalBottomSheetChild});
 
-class MyModalBottomSheet{
-  BuildContext context;
-  int index;
-  Widget modalBottomSheetChild;
-  MyModalBottomSheet({this.context,this.index,this.modalBottomSheetChild});
-  
-  void showModalSheet(){
-           showModalBottomSheet(
+  void showModalSheet() {
+    showModalBottomSheet(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       elevation: 5,
       isScrollControlled: true,
@@ -25,11 +24,10 @@ class MyModalBottomSheet{
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child:modalBottomSheetChild,
-            ),
+            child: modalBottomSheetChild,
+          ),
         ),
-        ),
-      );
+      ),
+    );
   }
-  
 }

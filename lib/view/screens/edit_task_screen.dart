@@ -5,15 +5,14 @@ import 'package:professional/core/providers/task_provider.dart';
 import 'package:provider/provider.dart';
 
 class EditTaskScreen extends StatelessWidget {
-  String taskName = "";
-  var formKey = GlobalKey<FormState>();
-
-  int index;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final int index;
   EditTaskScreen({this.index});
   @override
   Widget build(BuildContext context) {
-    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
-    DueDateProvider dueDateProvider =Provider.of<DueDateProvider>(context);
+    final TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    final DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context);
 
     return Form(
       key: formKey,
@@ -39,7 +38,7 @@ class EditTaskScreen extends StatelessWidget {
             },
             autofocus: true,
             onSaved: (value) {
-              taskName = value;
+              taskProvider.taskName = value;
             },
             decoration: InputDecoration(
               labelText: "Edit Task Name",
@@ -192,12 +191,13 @@ class EditTaskScreen extends StatelessWidget {
   void editOnPress(BuildContext context) async {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
-        DueDateProvider dueDateProvider=Provider.of<DueDateProvider>(context,listen: false);
+    DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context, listen: false);
 
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       Provider.of<TaskProvider>(context, listen: false).editTask(
-        title: taskName,
+        title: taskProvider.taskName,
         task: taskProvider.showingTaskList[index],
         taskPriority: taskProvider.currentContainer,
         checkboxDueDateValue: dueDateProvider.checkboxDueDateValue,

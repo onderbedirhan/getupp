@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class PercentageIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    final TaskProvider taskProvider = Provider.of<TaskProvider>(context);
 
     return CircularPercentIndicator(
       radius: 60.0,
