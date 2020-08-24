@@ -156,24 +156,29 @@ class TasksPage extends StatelessWidget {
                 return ExpansionTile(
                   leading: priorityIcon(context, index),
                   backgroundColor: kBackgroundColor,
-                  title: CheckboxListTile(
-                    title: Text(
-                      taskProvider.showingTaskList[index].taskName,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: kRobotoTextStyle,
-                        decoration:
-                            taskProvider.showingTaskList[index].taskIsDone
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        taskProvider.showingTaskList[index].taskName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: kRobotoTextStyle,
+                          decoration:
+                              taskProvider.showingTaskList[index].taskIsDone
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                        ),
                       ),
-                    ),
-                    value: taskProvider.showingTaskList[index].taskIsDone,
-                    onChanged: (value) {
-                      Provider.of<TaskProvider>(context, listen: false)
-                          .updateCheckProperty(
-                              taskProvider.showingTaskList[index]);
-                    },
+                      Checkbox(
+                        value: taskProvider.showingTaskList[index].taskIsDone,
+                        onChanged: (value) {
+                          Provider.of<TaskProvider>(context, listen: false)
+                              .updateCheckProperty(
+                                  taskProvider.showingTaskList[index]);
+                        },
+                      )
+                    ],
                   ),
                   children: <Widget>[
                     Padding(
@@ -327,18 +332,20 @@ class TasksPage extends StatelessWidget {
   String taskPriorityNameFunc(BuildContext context, int index) {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
+    String taskPriorityName;
     if (taskProvider.showingTaskList[index].taskPriority == 1) {
-      return "Less";
+      taskPriorityName = "Less";
     }
     if (taskProvider.showingTaskList[index].taskPriority == 2) {
-      return "Middle";
+      taskPriorityName = "Middle";
     }
     if (taskProvider.showingTaskList[index].taskPriority == 3) {
-      return "More";
+      taskPriorityName = "More";
     }
     if (taskProvider.showingTaskList[index].taskPriority == 0) {
-      return "Unspecified";
+      taskPriorityName = "Unspecified";
     }
+    return taskPriorityName;
   }
 
   void navigateEditTaskPage(BuildContext context, int index) {
@@ -363,22 +370,24 @@ class TasksPage extends StatelessWidget {
   Icon priorityIcon(BuildContext context, int index) {
     TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
+    Icon priorityIcon;
     if (taskProvider.showingTaskList[index].taskPriority == 3) {
-      return Icon(Icons.filter_1, color: kFieldColor);
+      priorityIcon = Icon(Icons.filter_1, color: kFieldColor);
     } else if (taskProvider.showingTaskList[index].taskPriority == 2) {
-      return Icon(
+      priorityIcon = Icon(
         Icons.filter_2,
         color: kFieldColor,
       );
     } else if (taskProvider.showingTaskList[index].taskPriority == 1) {
-      return Icon(
+      priorityIcon = Icon(
         Icons.filter_3,
         color: kFieldColor,
       );
     } else if (taskProvider.showingTaskList[index].taskPriority == 0)
-      return Icon(
+      priorityIcon = Icon(
         Icons.filter_none,
         color: kFieldColor,
       );
+    return priorityIcon;
   }
 }
