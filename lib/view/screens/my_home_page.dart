@@ -68,6 +68,7 @@ class MyHomePage extends StatelessWidget {
       ),
       body: currentTab[provider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        iconSize: 24,
         currentIndex: provider.currentIndex,
         onTap: (index) {
           provider.currentIndex = index;
@@ -86,6 +87,7 @@ class MyHomePage extends StatelessWidget {
             title: Text("Family"),
           ),
         ],
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }

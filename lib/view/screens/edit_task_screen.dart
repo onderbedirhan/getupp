@@ -147,13 +147,21 @@ class EditTaskScreen extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     RaisedButton(
-                      color: kMiniFieldColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      color: Colors.red.shade400,
                       child: Row(
                         children: <Widget>[
-                          Icon(Icons.calendar_today),
+                          Icon(
+                            Icons.calendar_today,
+                            color: Colors.white,
+                          ),
                           Text(
-                            "  Due Date",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            " Choose Due Date",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ],
                       ),
@@ -162,25 +170,38 @@ class EditTaskScreen extends StatelessWidget {
                       },
                     ),
                     Checkbox(
+                      activeColor: Colors.red.shade400,
                       value: dueDateProvider.checkboxDueDateValue,
                       onChanged: (value) {
                         Provider.of<DueDateProvider>(context, listen: false)
                             .checkboxDueDateEdit(value);
                       },
                     ),
+                    Text(dueDateProvider.dueDateText()),
                   ],
                 ),
-                RaisedButton(
-                  color: kFieldColor,
-                  child: Text(
-                    "Edit",
-                    style: TextStyle(color: kBackgroundColor),
-                  ),
-                  onPressed: () {
-                    editOnPress(context);
-                  },
-                ),
               ],
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: 45,
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              color: kFieldColor,
+              child: Text(
+                "Edit",
+                style: TextStyle(
+                  color: kBackgroundColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+              onPressed: () {
+                editOnPress(context);
+              },
             ),
           ),
         ],

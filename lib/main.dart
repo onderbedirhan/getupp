@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<BottomNavigationBarProvider>(
             create: (context) => BottomNavigationBarProvider()),
-                    ChangeNotifierProvider<DueDateProvider>(
+        ChangeNotifierProvider<DueDateProvider>(
             create: (context) => DueDateProvider()),
         ChangeNotifierProvider<TaskProvider>(
             create: (context) => TaskProvider()),

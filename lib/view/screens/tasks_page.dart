@@ -62,6 +62,9 @@ class TasksPage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -101,11 +104,14 @@ class TasksPage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         RaisedButton(
-                          color: kMiniFieldColor,
+                          color: Colors.red.shade400,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -116,18 +122,25 @@ class TasksPage extends StatelessWidget {
                           },
                           child: Row(
                             children: <Widget>[
-                              Icon(Icons.add),
+                              Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
                               Text(
                                 "Add Task",
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontFamily: "Roboto",
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ],
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Expanded(
                       child: TextFormField(
@@ -155,7 +168,7 @@ class TasksPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ExpansionTile(
                   leading: priorityIcon(context, index),
-                  backgroundColor: kBackgroundColor,
+                  backgroundColor: Colors.white,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -258,7 +271,7 @@ class TasksPage extends StatelessWidget {
                               IconButton(
                                 icon: Icon(
                                   Icons.delete,
-                                  color: kFieldColor,
+                                  color: Colors.red.shade400,
                                 ),
                                 onPressed: () {
                                   showDialog(

@@ -26,4 +26,15 @@ class DueDateProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  String dueDateText() {
+    String dueDateText;
+    if (checkboxDueDateValue) {
+      dueDateText = "Due Date Added";
+    }
+    if (checkboxDueDateValue == false) {
+      dueDateText = "Add Due Date";
+    }
+    return dueDateText;
+  }
 }
