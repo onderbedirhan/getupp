@@ -18,11 +18,12 @@ class DueDateProvider extends ChangeNotifier {
       firstDate: DateTime(2010),
       lastDate: DateTime(2030),
     );
-    if (datePicker != null && datePicker != date) {
+    if (datePicker != null) {
       date = datePicker;
       dateYear = date.year;
       dateMonth = date.month;
       dateDay = date.day;
+      checkboxDueDateValue = true;
       notifyListeners();
     }
   }
@@ -30,11 +31,16 @@ class DueDateProvider extends ChangeNotifier {
   String dueDateText() {
     String dueDateText;
     if (checkboxDueDateValue) {
-      dueDateText = "Due Date Added";
+      dueDateText = "Edit Due Date";
     }
     if (checkboxDueDateValue == false) {
       dueDateText = "Add Due Date";
     }
     return dueDateText;
+  }
+
+  void dueDateRemove() {
+    checkboxDueDateValue = false;
+    notifyListeners();
   }
 }

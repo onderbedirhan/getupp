@@ -73,7 +73,6 @@ class AddTaskScreen extends StatelessWidget {
                   } else {
                     taskProvider.currentContainer = 0;
                   }
-                  print(taskProvider.currentContainer);
                   taskProvider.gestureFunc();
                 },
                 child: Container(
@@ -97,7 +96,6 @@ class AddTaskScreen extends StatelessWidget {
                   } else {
                     taskProvider.currentContainer = 0;
                   }
-                  print(taskProvider.currentContainer);
                   taskProvider.gestureFunc();
                 },
                 child: Container(
@@ -121,7 +119,7 @@ class AddTaskScreen extends StatelessWidget {
                   } else {
                     taskProvider.currentContainer = 0;
                   }
-                  print(taskProvider.currentContainer);
+
                   taskProvider.gestureFunc();
                 },
                 child: Container(
@@ -148,7 +146,7 @@ class AddTaskScreen extends StatelessWidget {
                     RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
-                      color: Colors.red.shade400,
+                      color: kFieldColor,
                       child: Row(
                         children: <Widget>[
                           Icon(
@@ -156,7 +154,7 @@ class AddTaskScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           Text(
-                            " Choose Due Date",
+                            dueDateProvider.dueDateText(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
@@ -167,15 +165,32 @@ class AddTaskScreen extends StatelessWidget {
                         dueDateProvider.selectDate(context);
                       },
                     ),
-                    Checkbox(
-                      activeColor: Colors.red.shade400,
-                      value: dueDateProvider.checkboxDueDateValue,
-                      onChanged: (value) {
-                        Provider.of<DueDateProvider>(context, listen: false)
-                            .checkboxDueDateEdit(value);
-                      },
+                    SizedBox(
+                      width: 5,
                     ),
-                    Text(dueDateProvider.dueDateText()),
+                    Visibility(
+                      visible: (dueDateProvider.checkboxDueDateValue),
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        color: Colors.red.shade400,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.highlight_off,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Remove Due Date",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        onPressed: () {
+                          dueDateProvider.dueDateRemove();
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ],

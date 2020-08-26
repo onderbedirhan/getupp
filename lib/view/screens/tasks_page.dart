@@ -172,15 +172,17 @@ class TasksPage extends StatelessWidget {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        taskProvider.showingTaskList[index].taskName,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: kRobotoTextStyle,
-                          decoration:
-                              taskProvider.showingTaskList[index].taskIsDone
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
+                      Expanded(
+                        child: Text(
+                          taskProvider.showingTaskList[index].taskName,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: kRobotoTextStyle,
+                            decoration:
+                                taskProvider.showingTaskList[index].taskIsDone
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                          ),
                         ),
                       ),
                       Checkbox(

@@ -156,9 +156,9 @@ class TaskProvider extends ChangeNotifier {
 
   void getLocalData() async {
     mySharedPreferences = await SharedPreferences.getInstance();
-    String sonuc = mySharedPreferences.getString("taskList");
-    if (sonuc != null) {
-      final deger = json.decode(sonuc);
+    String result = mySharedPreferences.getString("taskList");
+    if (result != null) {
+      final deger = json.decode(result);
       ConvertTask convertTask = ConvertTask.fromJson(deger);
       _myList = convertTask.taskList;
       taskIsDoneCount();
