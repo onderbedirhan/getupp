@@ -326,8 +326,15 @@ class TasksPage extends StatelessWidget {
   }
 
   void editTask(BuildContext context, int index, Widget child) {
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
+    DueDateProvider dueDateProvider =
+        Provider.of<DueDateProvider>(context, listen: false);
     MyModalBottomSheet myModalBottomSheet = MyModalBottomSheet(
         context: context, index: index, modalBottomSheetChild: child);
+    if (taskProvider.showingTaskList[index].dueDateExist == false) {
+      dueDateProvider.date = DateTime.now();
+    }
     myModalBottomSheet.showModalSheet();
   }
 

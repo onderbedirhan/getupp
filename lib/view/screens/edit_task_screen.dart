@@ -74,7 +74,6 @@ class EditTaskScreen extends StatelessWidget {
                   } else {
                     taskProvider.currentContainer = 0;
                   }
-                  print(taskProvider.currentContainer);
                   taskProvider.gestureFunc();
                 },
                 child: Container(
@@ -98,7 +97,6 @@ class EditTaskScreen extends StatelessWidget {
                   } else {
                     taskProvider.currentContainer = 0;
                   }
-                  print(taskProvider.currentContainer);
                   taskProvider.gestureFunc();
                 },
                 child: Container(
@@ -122,7 +120,7 @@ class EditTaskScreen extends StatelessWidget {
                   } else {
                     taskProvider.currentContainer = 0;
                   }
-                  print(taskProvider.currentContainer);
+
                   taskProvider.gestureFunc();
                 },
                 child: Container(
@@ -138,6 +136,9 @@ class EditTaskScreen extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          SizedBox(
+            height: 10,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -199,6 +200,9 @@ class EditTaskScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           SizedBox(
             width: double.infinity,
