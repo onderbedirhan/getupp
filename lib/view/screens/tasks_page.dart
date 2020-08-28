@@ -4,6 +4,7 @@ import 'package:professional/core/providers/due_date_provider.dart';
 import 'package:professional/core/providers/task_provider.dart';
 import 'package:professional/view/components/widgets/modal_bottom_sheet.dart';
 import 'package:professional/view/components/widgets/percentage_indicator.dart';
+import 'package:professional/view/components/widgets/snackbar.dart';
 import 'package:professional/view/screens/edit_task_screen.dart';
 import 'package:provider/provider.dart';
 import 'add_task_screen.dart';
@@ -191,6 +192,12 @@ class TasksPage extends StatelessWidget {
                           Provider.of<TaskProvider>(context, listen: false)
                               .updateCheckProperty(
                                   taskProvider.showingTaskList[index]);
+                          if (value) {
+                            Scaffold.of(context).showSnackBar(MySnackBar()
+                                .snackBarWithContent(
+                                    snackBarContent: "Task Completed",
+                                    snackBarColor: kFieldColor));
+                          }
                         },
                       )
                     ],
@@ -301,8 +308,17 @@ class TasksPage extends StatelessWidget {
                                                           index]);
                                                   taskProvider
                                                       .taskIsDoneCount();
-
                                                   Navigator.pop(context);
+                                                  Scaffold.of(context)
+                                                      .showSnackBar(
+                                                    MySnackBar()
+                                                        .snackBarWithContent(
+                                                            snackBarContent:
+                                                                "Task Deleted",
+                                                            snackBarColor:
+                                                                Colors.red
+                                                                    .shade400),
+                                                  );
                                                 },
                                                 child: Text("Yes"),
                                               ),

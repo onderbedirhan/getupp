@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-//custom fontlar eklendi
+
 const kRobotoTextStyle = "Roboto";
+
 const kRussoTextStyle = "Russo";
 
-//custom renkler eklendi
-const kBackgroundColor =Color(0xFFE7F1FD);
+const kBackgroundColor = Color(0xFFE7F1FD);
 
 const kFieldColor = Color(0xFF5568E8);
 
