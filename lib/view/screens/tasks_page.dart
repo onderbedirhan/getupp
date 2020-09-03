@@ -117,6 +117,7 @@ class TasksPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           onPressed: () {
+                            FocusScope.of(context).unfocus();
                             taskProvider.currentContainer = 0;
                             dueDateProvider.checkboxDueDateValue = false;
                             addTask(context, AddTaskScreen());
@@ -265,8 +266,8 @@ class TasksPage extends StatelessWidget {
                                   color: kFieldColor,
                                 ),
                                 onPressed: () {
+                                  FocusScope.of(context).unfocus();
                                   navigateEditTaskPage(context, index);
-
                                   taskProvider.activateColor();
                                   editTask(
                                     context,
@@ -283,6 +284,7 @@ class TasksPage extends StatelessWidget {
                                   color: Colors.red.shade400,
                                 ),
                                 onPressed: () {
+                                  FocusScope.of(context).unfocus();
                                   showDialog(
                                       context: context,
                                       builder: (_) => AlertDialog(

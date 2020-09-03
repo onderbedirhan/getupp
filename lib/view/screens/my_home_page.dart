@@ -93,6 +93,7 @@ class MyHomePage extends StatelessWidget {
   }
 
   void addTask(BuildContext context, Widget child) {
+    FocusScope.of(context).unfocus();
     DueDateProvider dueDateProvider =
         Provider.of<DueDateProvider>(context, listen: false);
     TaskProvider taskProvider =
