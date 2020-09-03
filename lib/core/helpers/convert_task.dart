@@ -1,13 +1,12 @@
-import 'package:professional/core/models/task_model.dart';
+import '../../core/models/task_model.dart';
 
-class ConvertTask{
+class ConvertTask {
   final List<Task> taskList;
-  
-  ConvertTask(this.taskList);
-  factory ConvertTask.fromJson(List<dynamic> list){
-    List<Task> taskList=List<Task>();
-    taskList=list.map((i) =>Task.fromJson(i) ).toList();
-    return ConvertTask(taskList);
 
+  ConvertTask(this.taskList);
+  factory ConvertTask.fromJson(List<dynamic> list) {
+    List<Task> taskList = List<Task>();
+    taskList = list.map((i) => Task.fromJson(i)).toList();
+    return ConvertTask(taskList);
   }
 }

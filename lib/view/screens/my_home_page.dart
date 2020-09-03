@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/models/task_model.dart';
-import 'package:professional/core/providers/bottom_nav_provider.dart';
-import 'package:professional/core/providers/due_date_provider.dart';
-import 'package:professional/core/providers/task_provider.dart';
-import 'package:professional/view/components/widgets/modal_bottom_sheet.dart';
-import 'package:professional/view/screens/add_task_screen.dart';
-import 'package:professional/view/screens/family_page.dart';
-import 'package:professional/view/screens/tags_page.dart';
-import 'package:professional/view/screens/tasks_page.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' show Provider;
+import '../../core/constants/constants.dart';
+import '../../core/models/task_model.dart';
+import '../../core/providers/bottom_nav_provider.dart';
+import '../../core/providers/due_date_provider.dart';
+import '../../core/providers/task_provider.dart';
+import '../../view/components/widgets/modal_bottom_sheet.dart';
+import '../../view/screens/add_task_screen.dart';
+import '../../view/screens/family_page.dart';
+import '../../view/screens/tags_page.dart';
+import '../../view/screens/tasks_page.dart';
 
 class MyHomePage extends StatelessWidget {
   final String taskName = "";

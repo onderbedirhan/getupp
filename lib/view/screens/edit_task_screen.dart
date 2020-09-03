@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/providers/due_date_provider.dart';
-import 'package:professional/core/providers/task_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' show Provider;
+import '../../core/constants/constants.dart';
+import '../../core/providers/due_date_provider.dart';
+import '../../core/providers/task_provider.dart';
 
 class EditTaskScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

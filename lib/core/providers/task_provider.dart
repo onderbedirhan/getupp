@@ -1,11 +1,11 @@
-import 'dart:collection';
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/helpers/convert_task.dart';
-import 'package:professional/core/models/task_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:collection' show UnmodifiableListView;
+import 'dart:convert' show json;
+import 'package:shared_preferences/shared_preferences.dart'
+    show SharedPreferences;
+import '../../core/constants/constants.dart';
+import '../../core/helpers/convert_task.dart';
+import '../../core/models/task_model.dart';
 
 class TaskProvider extends ChangeNotifier {
   String taskName;

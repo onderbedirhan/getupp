@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/providers/due_date_provider.dart';
-import 'package:professional/core/providers/task_provider.dart';
-import 'package:professional/view/components/widgets/modal_bottom_sheet.dart';
-import 'package:professional/view/components/widgets/percentage_indicator.dart';
-import 'package:professional/view/components/widgets/snackbar.dart';
-import 'package:professional/view/screens/edit_task_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' show Provider;
 import 'add_task_screen.dart';
+import '../../core/constants/constants.dart';
+import '../../core/providers/due_date_provider.dart';
+import '../../core/providers/task_provider.dart';
+import '../../view/components/widgets/modal_bottom_sheet.dart';
+import '../../view/components/widgets/percentage_indicator.dart';
+import '../../view/components/widgets/snackbar.dart';
+import '../../view/screens/edit_task_screen.dart';
 
 class TasksPage extends StatelessWidget {
   @override

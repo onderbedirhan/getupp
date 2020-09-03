@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:professional/core/constants/constants.dart';
-import 'package:professional/core/providers/task_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart'
+    show CircularPercentIndicator, CircularStrokeCap;
+import 'package:provider/provider.dart' show Provider;
+import '../../../core/constants/constants.dart';
+import '../../../core/providers/task_provider.dart';
 
 class PercentageIndicator extends StatelessWidget {
   @override
