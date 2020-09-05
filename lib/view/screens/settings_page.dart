@@ -9,6 +9,9 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     SettingsProvider settingsProviderListenFalse =
         Provider.of<SettingsProvider>(context, listen: false);
+    if (settingsProviderListenFalse.isHideCompletedTask == null) {
+      settingsProviderListenFalse.isHideCompletedTask = false;
+    }
     SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     TaskProvider taskProviderListenFalse =
         Provider.of<TaskProvider>(context, listen: false);
