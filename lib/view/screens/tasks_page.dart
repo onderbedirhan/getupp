@@ -8,6 +8,7 @@ import '../../view/components/widgets/modal_bottom_sheet.dart';
 import '../../view/components/widgets/percentage_indicator.dart';
 import '../../view/components/widgets/snackbar.dart';
 import '../../view/screens/edit_task_screen.dart';
+import '../../core/providers/settings_provider.dart';
 
 class TasksPage extends StatelessWidget {
   @override
@@ -16,6 +17,9 @@ class TasksPage extends StatelessWidget {
     final DueDateProvider dueDateProvider =
         Provider.of<DueDateProvider>(context);
     final Size screenSize = MediaQuery.of(context).size;
+    Provider.of<TaskProvider>(context).isHideCompletedTask =
+        Provider.of<SettingsProvider>(context).isHideCompletedTask;
+    taskProvider.taskIsDoneCount();
 
     return Container(
       color: Colors.white,

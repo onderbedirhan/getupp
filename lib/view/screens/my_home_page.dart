@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:professional/view/screens/settings_page.dart';
 import 'package:provider/provider.dart' show Provider;
 import '../../core/constants/constants.dart';
 import '../../core/models/task_model.dart';
 import '../../core/providers/bottom_nav_provider.dart';
-import '../../core/providers/due_date_provider.dart';
-import '../../core/providers/task_provider.dart';
-import '../../view/components/widgets/modal_bottom_sheet.dart';
-import '../../view/screens/add_task_screen.dart';
 import '../../view/screens/family_page.dart';
 import '../../view/screens/tags_page.dart';
 import '../../view/screens/tasks_page.dart';
@@ -20,6 +17,7 @@ class MyHomePage extends StatelessWidget {
     TasksPage(),
     TagsPage(),
     FamilyPage(),
+    SettingsPage(),
   ];
 
   @override
@@ -29,18 +27,6 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add_circle,
-              color: kFieldColor,
-              size: 30,
-            ),
-            onPressed: () {
-              addTask(context, AddTaskScreen());
-            },
-          ),
-        ],
         backgroundColor: kMiniFieldColor,
         centerTitle: true,
         title: RichText(
@@ -86,24 +72,13 @@ class MyHomePage extends StatelessWidget {
             icon: Icon(Icons.people),
             title: Text("Family"),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            title: Text("Settings"),
+          ),
         ],
         type: BottomNavigationBarType.fixed,
       ),
     );
-  }
-
-  void addTask(BuildContext context, Widget child) {
-    FocusScope.of(context).unfocus();
-    DueDateProvider dueDateProvider =
-        Provider.of<DueDateProvider>(context, listen: false);
-    TaskProvider taskProvider =
-        Provider.of<TaskProvider>(context, listen: false);
-    taskProvider.inactivateColor();
-    taskProvider.taskIsDoneCount();
-    dueDateProvider.date = DateTime.now();
-    dueDateProvider.checkboxDueDateValue = false;
-    MyModalBottomSheet myModalBottomSheet =
-        MyModalBottomSheet(context: context, modalBottomSheetChild: child);
-    myModalBottomSheet.showModalSheet();
   }
 }

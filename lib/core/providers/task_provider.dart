@@ -26,6 +26,7 @@ class TaskProvider extends ChangeNotifier {
   Color containerLessColor = Colors.white;
   Color containerMiddleColor = Colors.white;
   Color containerMoreColor = Colors.white;
+  bool isHideCompletedTask = false;
 
   TextEditingController textEditingController = TextEditingController();
 
@@ -133,7 +134,9 @@ class TaskProvider extends ChangeNotifier {
     showingTaskList = [];
     for (Task value in _myList) {
       if (value.taskIsDone == true) {
-        completedTaskList.add(value);
+        if (!isHideCompletedTask) {
+          completedTaskList.add(value);
+        }
       } else {
         uncompletedTaskList.add(value);
       }
@@ -149,7 +152,9 @@ class TaskProvider extends ChangeNotifier {
       showingTaskList.add(task);
     }
     for (Task task in completedTaskList) {
-      showingTaskList.add(task);
+      if (!isHideCompletedTask) {
+        showingTaskList.add(task);
+      }
     }
     _myList = showingTaskList;
   }
@@ -158,8 +163,8 @@ class TaskProvider extends ChangeNotifier {
     mySharedPreferences = await SharedPreferences.getInstance();
     String result = mySharedPreferences.getString("taskList");
     if (result != null) {
-      final deger = json.decode(result);
-      ConvertTask convertTask = ConvertTask.fromJson(deger);
+      final value = json.decode(result);
+      ConvertTask convertTask = ConvertTask.fromJson(value);
       _myList = convertTask.taskList;
       taskIsDoneCount();
       notifyListeners();
