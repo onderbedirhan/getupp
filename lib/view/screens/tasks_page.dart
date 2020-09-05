@@ -16,9 +16,13 @@ class TasksPage extends StatelessWidget {
     final TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     final DueDateProvider dueDateProvider =
         Provider.of<DueDateProvider>(context);
+    final SettingsProvider settingsProvider =
+        Provider.of<SettingsProvider>(context);
+    if (settingsProvider.isHideCompletedTask == null) {
+      settingsProvider.isHideCompletedTask = false;
+    }
     final Size screenSize = MediaQuery.of(context).size;
-    Provider.of<TaskProvider>(context).isHideCompletedTask =
-        Provider.of<SettingsProvider>(context).isHideCompletedTask;
+    taskProvider.isHideCompletedTask = settingsProvider.isHideCompletedTask;
     taskProvider.taskIsDoneCount();
 
     return Container(
